@@ -117,7 +117,14 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: narendranreddy/frontend:v1.0   
+        image: narendranreddy/frontend:v1.0
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+          limits:
+            cpu: "150m"
+            memory: "256Mi"            
         # envFrom:
         # - configMapRef:
         #     name: frontend
@@ -125,15 +132,14 @@ spec:
         - name: nginx-conf
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
-          readOnly: true
+          readOnly: true        
       volumes:
       - name: nginx-conf
         configMap:
           name: frontend
           items:
           - key: nginx.conf
-            path: nginx.conf 
-                    
+            path: nginx.conf        
 ---
 kind: Service
 apiVersion: v1
@@ -149,4 +155,4 @@ spec:
   ports:
   - protocol: TCP
     port: 80
-    targetPort: 8080 
+    targetPort: 8080          
